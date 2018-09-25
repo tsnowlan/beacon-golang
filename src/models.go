@@ -2,102 +2,102 @@ package main
 
 // Beacon : general beacon info
 type Beacon struct {
-	ID             string
-	Name           string
-	APIVersion     string
-	Organization   BeaconOrganization
-	Description    string
-	Version        string
-	WelcomeURL     string
-	AlternativeURL string
-	CreateDateTime string
-	UpdateDateTime string
-	Datasets       map[string]BeaconDataset
+	ID             string                   `json:"id"`
+	Name           string                   `json:"name"`
+	APIVersion     string                   `json:"apiVersion"`
+	Organization   BeaconOrganization       `json:"organization"`
+	Description    string                   `json:"description"`
+	Version        string                   `json:"version"`
+	WelcomeURL     string                   `json:"welcomeUrl"`
+	AlternativeURL string                   `json:"alternativeUrl"`
+	CreateDateTime string                   `json:"createDateTime"`
+	UpdateDateTime string                   `json:"updateDateTime"`
+	Datasets       map[string]BeaconDataset `json:"datasets"`
 }
 
 // BeaconDataset is a description of the shared dataset
 type BeaconDataset struct {
-	ID                string
-	Name              string
-	AssemblyID        string // example: GRCh38
-	CreateDateTime    string // The time the dataset was created (ISO 8601 format).
-	UpdateDateTime    string // The time the dataset was created (ISO 8601 format).
-	Version           string
-	VariantCount      uint   // Total number of variants in the dataset.
-	CallCount         uint   // Total number of calls in the dataset.
-	SampleCount       uint   // Total number of samples in the dataset.
-	ExternalURL       string // URL to an external system providing more dataset information (RFC 3986 format).
-	Info              map[string]string
-	dataUseConditions DataUseConditions
+	ID                string            `json:"id"`
+	Name              string            `json:"name"`
+	AssemblyID        string            `json:"assemblyId"`     // example: GRCh38
+	CreateDateTime    string            `json:"createDateTime"` // The time the dataset was created (ISO 8601 format).
+	UpdateDateTime    string            `json:"updateDateTime"` // The time the dataset was created (ISO 8601 format).
+	Version           string            `json:"version"`
+	VariantCount      uint              `json:"variantCount"` // Total number of variants in the dataset.
+	CallCount         uint              `json:"callCoutner"`  // Total number of calls in the dataset.
+	SampleCount       uint              `json:"sampleCount"`  // Total number of samples in the dataset.
+	ExternalURL       string            `json:"externalUrl"`  // URL to an external system providing more dataset information (RFC 3986 format).
+	Info              []KeyValuePair    `json:"info"`
+	DataUseConditions DataUseConditions `json:"dataUseConditions"`
 }
 
 // BeaconAlleleRequest as interpreted by the beacon
 type BeaconAlleleRequest struct {
-	ReferenceName           string // Reference name (chromosome). Accepting values 1-22, X, Y.
-	Start                   uint64
-	End                     uint64
-	StartMin                uint64
-	StartMax                uint64
-	EndMin                  uint64
-	EndMax                  uint64
-	ReferenceBases          string // Reference bases for this variant (starting from start). For accepted values see the REF field in VCF 4.2 specification
-	AlternateBases          string // The bases that appear instead of the reference bases. For accepted values see the ALT field in VCF 4.2 specification
-	AssemblyID              string // example: GRCh38
-	DatasetIds              []string
-	IncludeDatasetResponses string // Valid values: ALL, HIT, MISS, NONE. If null (not specified), the default value of NONE is assumed.
+	ReferenceName           string   `json:"referenceName"` // Reference name (chromosome). Accepting values 1-22, X, Y.
+	Start                   uint64   `json:"start"`
+	End                     uint64   `json:"end"`
+	StartMin                uint64   `json:"startMin"`
+	StartMax                uint64   `json:"startMax"`
+	EndMin                  uint64   `json:"endMin"`
+	EndMax                  uint64   `json:"endMax"`
+	ReferenceBases          string   `json:"referenceBases"` // Reference bases for this variant (starting from start). For accepted values see the REF field in VCF 4.2 specification
+	AlternateBases          string   `json:"alternateBases"` // The bases that appear instead of the reference bases. For accepted values see the ALT field in VCF 4.2 specification
+	AssemblyID              string   `json:"assemblyId"`     // example: GRCh38
+	DatasetIDs              []string `json:"datasetIds"`
+	IncludeDatasetResponses string   `json:"includeDatasetResponses"` // Valid values: ALL, HIT, MISS, NONE. If null (not specified), the default value of NONE is assumed.
 }
 
 // BeaconAlleleResponse : query response struct
 type BeaconAlleleResponse struct {
-	BeaconID               string
-	APIVersion             string // Version of the API. If specified, the value must match APIVersion in Beacon
-	Exists                 bool   // This should be non-null, unless there was an error, in which case error has to be non-null.
-	AlleleRequest          BeaconAlleleRequest
-	DatasetAlleleResponses []BeaconDatasetAlleleResponse
-	Error                  BeaconError
+	BeaconID               string                        `json:"beaconId"`
+	APIVersion             string                        `json:"apiVersion"` // Version of the API. If specified, the value must match APIVersion in Beacon
+	Exists                 bool                          `json:"exists"`     // This should be non-null, unless there was an error, in which case error has to be non-null.
+	AlleleRequest          BeaconAlleleRequest           `json:"alleleRequest"`
+	DatasetAlleleResponses []BeaconDatasetAlleleResponse `json:"datasetAlleleResponses"`
+	Error                  BeaconError                   `json:"error"`
 }
 
 // BeaconOrganization Organization owning the beacon.
 type BeaconOrganization struct {
-	ID          string // Unique identifier of the organization.
-	Name        string
-	Description string
-	Address     string
-	WelcomeURL  string // URL of the website of the organization (RFC 3986 format).
-	ContactURL  string // URL with the contact for the beacon operator/maintainer, e.g. link to a contact form (RFC 3986 format) or an email (RFC 2368 format).
-	LogoURL     string // URL to the logo (PNG/JPG format) of the organization (RFC 3986 format).
-	Info        []KeyValuePair
+	ID          string         `json:"id"` // Unique identifier of the organization.
+	Name        string         `json:"name"`
+	Description string         `json:"description"`
+	Address     string         `json:"address"`
+	WelcomeURL  string         `json:"welcomeUrl"` // URL of the website of the organization (RFC 3986 format).
+	ContactURL  string         `json:"contactUrl"` // URL with the contact for the beacon operator/maintainer, e.g. link to a contact form (RFC 3986 format) or an email (RFC 2368 format).
+	LogoURL     string         `json:"logoUrl"`    // URL to the logo (PNG/JPG format) of the organization (RFC 3986 format).
+	Info        []KeyValuePair `json:"info"`
 }
 
 // BeaconDatasetAlleleResponse - beacon dataset response object
 type BeaconDatasetAlleleResponse struct {
-	DatasetID    string
-	Exists       bool // Indicator of whether the given allele was observed in the dataset. This should be non-null, unless there was an error, in which case error has to be non-null.
-	Error        BeaconError
-	Frequency    float64 // Frequency of this allele in the dataset. Between 0 and 1, inclusive.
-	VariantCount uint    // Number of variants matching the allele request in the dataset.
-	CallCount    uint    // Number of calls matching the allele request in the dataset.
-	SampleCount  uint    // Number of samples matching the allele request in the dataset
-	Note         string  // Additional note or description of the response.
-	ExternalURL  string  // URL to an external system, such as a secured beacon or a system providing more information about a given allele (RFC 3986 format).
-	Info         []KeyValuePair
+	DatasetID    string         `json:"datasetId"`
+	Exists       bool           `json:"exists"` // Indicator of whether the given allele was observed in the dataset. This should be non-null, unless there was an error, in which case error has to be non-null.
+	Error        BeaconError    `json:"error"`
+	Frequency    float64        `json:"frequency"`    // Frequency of this allele in the dataset. Between 0 and 1, inclusive.
+	VariantCount uint           `json:"variantCount"` // Number of variants matching the allele request in the dataset.
+	CallCount    uint           `json:"callCount"`    // Number of calls matching the allele request in the dataset.
+	SampleCount  uint           `json:"sampleCount"`  // Number of samples matching the allele request in the dataset
+	Note         string         `json:"note"`         // Additional note or description of the response.
+	ExternalURL  string         `json:"externalUrl"`  // URL to an external system, such as a secured beacon or a system providing more information about a given allele (RFC 3986 format).
+	Info         []KeyValuePair `json:"info"`
 }
 
 // BeaconError : Beacon-specific error. This should be non-null in exceptional situations only, in which case exists has to be null.
 type BeaconError struct {
-	ErrorCode    int32
-	ErrorMessage string
+	ErrorCode    int32  `json:"errorCode"`
+	ErrorMessage string `json:"errorMessage"`
 }
 
 // KeyValuePair : KV pairing for additional info
 type KeyValuePair struct {
-	Key   string
-	Value string
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // DataUseConditions : Data use conditions ruling this dataset.
 type DataUseConditions struct {
-	ConsentCodeDataUse ConsentCodeDataUse
+	ConsentCodeDataUse ConsentCodeDataUse `json:"consentCodeDataUse"`
 }
 
 // ConsentCodeDataUseConditionPrimary : see below
@@ -109,8 +109,8 @@ type ConsentCodeDataUseConditionPrimary struct {
 	// HMB(CC): health/medical/biomedical research and clinical care - Use of the data is limited to health/medical/biomedical purposes, does not include the study of population origins or ancestry.
 	// DS-XX: disease-specific research and clinical care - Use of the data must be related to [disease].
 	// POA: population origins/ancestry research - Use of the data is limited to the study of population origins or ancestry.
-	Code        string
-	Description string
+	Code        string `json:"code"`
+	Description string `json:"description"`
 }
 
 // ConsentCodeDataUseConditionSecondary : see below
@@ -121,8 +121,8 @@ type ConsentCodeDataUseConditionSecondary struct {
 	// RUO: research use only - Use of data is limited to research purposes (e.g., does not include its use in clinical care).
 	// NMDS: no “general methods” research - Use of the data includes methods development research (e.g., development of software or algorithms) ONLY within the bounds of other data use limitations.
 	// GSO: genetic studies only - Use of the data is limited to genetic studies only (i.e., no research using only the phenotype data).
-	Code        string
-	Description string
+	Code        string `json:"code"`
+	Description string `json:"description"`
 }
 
 // ConsentCodeDataUseConditionRequirement : see below
@@ -140,14 +140,14 @@ type ConsentCodeDataUseConditionRequirement struct {
 	// US: user-specific restrictions - Use of data is limited to use by approved users.
 	// PS: project-specific restrictions - Use of data is limited to use within an approved project.
 	// IS: institution-specific restrictions - Use of data is limited to use within an approved institution.
-	Code        *string
-	Description string
+	Code        string `json:"code"`
+	Description string `json:"description"`
 }
 
 // ConsentCodeDataUse : the categories the dta is available for use with
 type ConsentCodeDataUse struct {
-	PrimaryCategory     ConsentCodeDataUseConditionPrimary
-	SecondaryCategories []ConsentCodeDataUseConditionSecondary
-	requirements        []ConsentCodeDataUseConditionRequirement
-	Version             string // Version of the data use specification., e.g., v0.1
+	PrimaryCategory     ConsentCodeDataUseConditionPrimary       `json:"primaryCategory"`
+	SecondaryCategories []ConsentCodeDataUseConditionSecondary   `json:"secondaryCategory"`
+	Requirements        []ConsentCodeDataUseConditionRequirement `json:"requirements"`
+	Version             string                                   `json:"version"` // Version of the data use specification., e.g., v0.1
 }
